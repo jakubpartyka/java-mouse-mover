@@ -33,6 +33,8 @@ public class GUI implements Runnable {
 
             new Mover(statusLabel).start();
         });
+
+        EXITButton.addActionListener(e -> System.exit(0));
     }
 
     private boolean verifyInput() {
