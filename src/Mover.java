@@ -2,31 +2,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-@SuppressWarnings("BusyWait")
+@SuppressWarnings({"BusyWait", "rawtypes"})
 public class Mover extends SwingWorker{
 
-    private JLabel statusLabel;
-    private int interval,duration, timeLeft;
+    private final int interval, duration;
+    private int timeLeft;
     boolean active = true;
 
     //moise moving related variables
     public static int MAX_X;
     public static int MAX_Y;
 
-
-    public Mover(JLabel statusLabel,int interval,int duration) {
+    public Mover(int interval,int duration) {
         super();
-        this.statusLabel = statusLabel;
         this.interval = interval;
         this.duration = duration;
+        timeLeft = interval;
 
         // determine screen size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
         MAX_X = (int) screenSize.getWidth();
         MAX_Y = (int) screenSize.getHeight();
-
-        timeLeft = interval;
     }
 
     @Override
@@ -39,14 +35,11 @@ public class Mover extends SwingWorker{
                     e.printStackTrace();
                 }
                 timeLeft--;
-
                 setProgress(timeLeft);
-
                 if(timeLeft <= 0)
                     performActivity();
             }
         }
-
         return null;
     }
 

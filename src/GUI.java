@@ -1,7 +1,6 @@
 import javax.swing.*;
 
 public class GUI implements Runnable {
-    private JFrame frame;
     private JTextField activityIntervalField;
     private JButton STARTButton;
     private JButton EXITButton;
@@ -16,7 +15,7 @@ public class GUI implements Runnable {
     @Override
     public void run() {
         // initialize main frame
-        frame = new JFrame("Java Mouse Mover");
+        JFrame frame = new JFrame("Java Mouse Mover");
         frame.add(panel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(400,400);
@@ -32,7 +31,7 @@ public class GUI implements Runnable {
                 return;
             }
 
-            Mover mover = new Mover(statusLabel,interval,duration);
+            Mover mover = new Mover(interval,duration);
             mover.addPropertyChangeListener(evt -> {
                 int timeLeft = mover.getTimeLeft();
                 if(timeLeft >= 0)
@@ -42,8 +41,6 @@ public class GUI implements Runnable {
             });
             Thread thread = new Thread(mover);
             thread.start();
-
-
         });
 
         EXITButton.addActionListener(e -> System.exit(0));
