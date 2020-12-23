@@ -18,6 +18,7 @@ public class GUI implements Runnable {
         // initialize main frame
         frame = new JFrame("Java Mouse Mover");
         frame.add(panel);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(400,400);
         frame.setResizable(false);
         frame.setAlwaysOnTop(true);
