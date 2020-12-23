@@ -28,11 +28,22 @@ public class GUI implements Runnable {
         STARTButton.addActionListener(e -> {
             // verify input
             if(!verifyInput()){
-                JOptionPane.showMessageDialog(null,"Incorrect parameters specifed!","Input verification failed",JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null,"Incorrect parameters specified!","Input verification failed",JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            new Mover(statusLabel).start();
+            Mover mover = new Mover(statusLabel,interval,duration);
+            mover.addPropertyChangeListener(evt -> {
+                int timeLeft = mover.getTimeLeft();
+                if(timeLeft >= 0)
+                    statusLabel.setText("Next activity in " + mover.getTimeLeft() + " seconds");
+                else
+                    statusLabel.setText("Activity in progress");
+            });
+            Thread thread = new Thread(mover);
+            thread.start();
+
+
         });
 
         EXITButton.addActionListener(e -> System.exit(0));
