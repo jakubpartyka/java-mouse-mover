@@ -7,9 +7,15 @@ public class GUI implements Runnable {
     private JButton EXITButton;
     private JLabel statusLabel;
     private JPanel panel;
+    private JTextField activityDurationField;
+
+    // variables declaration
+    int interval;
+    int duration;
 
     @Override
     public void run() {
+        // initialize main frame
         frame = new JFrame("Java Mouse Mover");
         frame.add(panel);
         frame.setSize(400,400);
@@ -17,5 +23,26 @@ public class GUI implements Runnable {
         frame.setAlwaysOnTop(true);
         frame.setVisible(true);
 
+        // add action listeners
+        STARTButton.addActionListener(e -> {
+            // verify input
+            if(!verifyInput()){
+                JOptionPane.showMessageDialog(null,"Incorrect parameters specifed!","Input verification failed",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            new Mover(statusLabel).start();
+        });
+    }
+
+    private boolean verifyInput() {
+        try {
+            interval = Integer.parseInt(activityIntervalField.getText());
+            duration = Integer.parseInt(activityDurationField.getText());
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 }
