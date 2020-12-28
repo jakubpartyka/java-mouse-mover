@@ -12,6 +12,8 @@ public class GUI implements Runnable {
     int interval;
     int duration;
 
+    Mover mover;
+
     @Override
     public void run() {
         // initialize main frame
@@ -31,13 +33,25 @@ public class GUI implements Runnable {
                 return;
             }
 
-            Mover mover = new Mover(interval,duration);
+            //change text
+            if(STARTButton.getText().equals("START"))
+                STARTButton.setText("STOP");
+            else {  // stop the mover
+                STARTButton.setText("START");
+                statusLabel.setText("Ready to go!");
+                mover.removePropertyChangeListener(evt -> {});
+                mover.active = false;
+                return;
+            }
+
+            mover = new Mover(interval,duration);
             mover.addPropertyChangeListener(evt -> {
                 int timeLeft = mover.getTimeLeft();
-                if(timeLeft >= 0)
-                    statusLabel.setText("Next activity in " + mover.getTimeLeft() + " seconds");
-                else
-                    statusLabel.setText("Activity in progress");
+                if(mover.active)
+                    if(timeLeft >= 0)
+                        statusLabel.setText("Next activity in " + mover.getTimeLeft() + " seconds");
+                    else
+                        statusLabel.setText("Activity in progress");
             });
             Thread thread = new Thread(mover);
             thread.start();
