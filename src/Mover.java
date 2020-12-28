@@ -26,7 +26,7 @@ public class Mover extends SwingWorker{
     }
 
     @Override
-    protected Object doInBackground() throws AWTException {
+    protected Object doInBackground() {
         while (active) {
             while (active && timeLeft >= 0) {
                 try {
@@ -43,13 +43,13 @@ public class Mover extends SwingWorker{
         return null;
     }
 
-    private void performActivity() throws AWTException {
-        Robot robot = new Robot();
+    private void performActivity() {
         Random random = new Random();
         long t = System.currentTimeMillis();
         long end = t + (duration * 1000L);
         while(System.currentTimeMillis() < end) {
-            robot.mouseMove(random.nextInt(MAX_X), random.nextInt(MAX_Y));
+            //robot.mouseMove(random.nextInt(MAX_X), random.nextInt(MAX_Y));
+            mouseGlide(random.nextInt(MAX_X), random.nextInt(MAX_Y),random.nextInt(MAX_X), random.nextInt(MAX_Y));
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -57,6 +57,21 @@ public class Mover extends SwingWorker{
             }
         }
         timeLeft = interval;
+    }
+
+    private void mouseGlide(int x1, int y1, int x2, int y2) {
+        try {
+            Robot r = new Robot();
+            double dx = (x2 - x1) / ((double) 10000);
+            double dy = (y2 - y1) / ((double) 10000);
+            double dt = 10 / ((double) 10000);
+            for (int step = 1; step <= 10000; step++) {
+                Thread.sleep((int) dt);
+                r.mouseMove((int) (x1 + dx * step), (int) (y1 + dy * step));
+            }
+        } catch (AWTException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getTimeLeft() {
